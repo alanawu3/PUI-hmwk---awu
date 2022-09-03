@@ -1,12 +1,12 @@
 .notecard {
-    box-sizing: border-box;
-    margin: 150px auto 0px auto;
     width: 450px;
-    height: auto;
-    padding: 10px;
+    height: 180px;
     border-radius: 8px;
     background-color: green;
-    text-align: center;
+
+    margin-top: 100px;
+    margin-left: auto;
+    margin-left: auto;
 }
 
 .note-title { /*override body color*/
