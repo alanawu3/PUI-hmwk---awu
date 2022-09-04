@@ -23,7 +23,7 @@ h3 { /*prices*/
 .nav-bar { /* "product" and "cart"*/
     /*border: 3px solid red;*/
     width: 100%;
-    font-size: 150%;
+    font-size: 120%;
     display: inline-flex;
     justify-content: space-between;
     text-align: center;
@@ -70,7 +70,7 @@ p {
 .products { /*container for products displayed*/
     display: flex;
     flex-flow: row wrap;
-    margin: 8%;
+    margin: 5% 8% 0 8%;
     justify-content: space-between;
     box-sizing:border-box;
 }
