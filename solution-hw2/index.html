@@ -1,11 +1,302 @@
 <!DOCTYPE html>
+<meta charset="utf-8">
 <html lang="en">
-  <meta charset="UTF-8">
-  <title>Page Title</title>
-  
+  <head>
+      <link rel="stylesheet" href="style.css">
+  <title>Hmwk 2 Bun Bun Bake Shop Alana Wu</title>
+  <script src="app.js" defer></script>
+  </head>
+    
   <body>
+  <!--nav bar: logo, product, cart, horiz. line, our handmade...-->
+    <div class="nav-bar">
+      <img id="logo" src="Hmwk-2-Assets/logo-01.svg" alt="Bun Bun Logo" width="30%">
+      <div class="nav-right"> <!--elements right of logo-->
+        <div class="menu-bar"> <!--container for "products" & "cart"-->
+          <div class="page-title">
+            <h2 class="nav-link"> PRODUCTS</h2>
+          </div>
+    
+          <div class="page-title">
+            <h2 class="nav-link"> CART</h2>
+          </div>
+        </div>
 
-    <h1>I am the solution to HW2!</h1>
+        <div class="cart">
+          <p id ="cart-items" class="cart-text">1 item</p>
+          <p id="price-total" class="cart-text">Total: $0.00</p>
+        </div>
 
+        <div id="popup">
+          <p id="added-to-cart" class="popup-text">Added to Cart:</p>
+          <p id="new-item" class="popup-text">Raisin cinnamon roll</p>
+          <p id="new-item-glaze" class="popup-text">Double Chocolate Glazing</p>
+          <p id="new-item-pack" class="popup-text">Pack of 6</p>
+          <p id="new-item-price" class="popup-text">Price: $22.45</p>
+        </div>
+
+        <hr>
+        <h1>Our hand-made cinnamon rolls</h1>
+      </div>
+    </div>
+    
+    <div class="products"> <!--all products shown on page-->
+      <div class="product"> <!--individual type of cinnamon roll-->
+        <img class="product-img" src="Hmwk-2-Assets/original-cinnamon-roll.jpg" alt="original cinnamon roll" width="300px">
+
+        <div class="product-label"> <!--name of cinnamon roll-->
+          <h2> Original Cinnamon Roll</h2>
+        </div>
+
+        <div class="product-choices-2rows"> <!--glazing & pack size selection rows-->
+          <div class="product-choice-row">
+            <div class="product-choice-row-text">
+              <p>Glazing:</p>
+            </div>
+            <select id="0-glaze" onchange = "updateGlazeOption('0')">
+              <option value = 0 class="option">Keep Original</option>
+              <option value = 1 class="option">Sugar Milk</option>
+              <option value = 2 class="option">Vanilla Milk</option>
+              <option value = 3 class="option">Double Chocolate</option>
+            </select>
+          </div>
+
+          <div class="product-choice-row">
+            <div class="product-choice-row-text">
+            <p> Pack Size:</p>
+            </div>
+
+            <div class="pack-size">
+              <button class="pack-size-btn pack-size-selected-btn" onclick = "updatePackSize(this, 0, 1)"> <p>1</p> </button>
+              <button class="pack-size-btn" onclick = "updatePackSize(this, 0, 3)"> <p>3</p> </button>
+              <button class="pack-size-btn" onclick = "updatePackSize(this, 0, 6)"> <p>6</p> </button>
+              <button class="pack-size-btn" onclick = "updatePackSize(this, 0, 12)"> <p>12</p> </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-choice-last-row"> <!--price & add to cart row-->
+          <h3 id="price-0">$ 2.49</h3>
+          <button class="add-to-cart-btn" onclick = "popupFxns(this, 0)">
+            <h2>Add to Cart</h2>
+          </button>
+        </div>
+      </div>
+
+      <!--Apple Cinnamon Roll-->
+      <div class="product">
+        <img class="product-img" src="Hmwk-2-Assets/apple-cinnamon-roll.jpg" alt="apple cinnamon roll" width="300px">
+        <div class="product-label"> <!--type of cinnamon roll-->
+          <h2> Apple Cinnamon Roll</h2>
+        </div>
+
+        <div class="product-choices-2rows"> <!--glazing & pack size selection rows-->
+          <div class="product-choice-row">
+            <div class="product-choice-row-text">
+              <p>Glazing:</p>
+            </div>
+            <select id="1-glaze" onchange = "updateGlazeOption('1')">
+              <option value = 0 class="option">Keep Original</option>
+              <option value = 1 class="option">Sugar Milk</option>
+              <option value = 2 class="option">Vanilla Milk</option>
+              <option value = 3 class="option">Double Chocolate</option>
+            </select>
+          </div>
+
+          <div class="product-choice-row">
+            <div class="product-choice-row-text">
+            <p> Pack Size:</p>
+            </div>
+
+            <div class="pack-size" id="apple">
+              <button class="pack-size-btn pack-size-selected-btn" onclick = "updatePackSize(this, 1, 1)"> <p>1</p> </button>
+              <button class="pack-size-btn" onclick = "updatePackSize(this, 1, 3)"> <p>3</p> </button>
+              <button class="pack-size-btn" onclick = "updatePackSize(this, 1, 6)"> <p>6</p> </button>
+              <button class="pack-size-btn" onclick = "updatePackSize(this, 1, 12)"> <p>12</p> </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-choice-last-row"> <!--price & add to cart row-->
+          <h3 id="price-1">$3.49</h3>
+          <button class="add-to-cart-btn" onclick = "popupFxns(this, 1)">
+            <h2>Add to Cart</h2>
+          </button>
+        </div>
+      </div>
+
+      <!-- Raisin Cinnamon Roll-->
+      <div class="product">
+        <img class="product-img" src="Hmwk-2-Assets/raisin-cinnamon-roll.jpg" alt="raisin cinnamon roll" width="300px">
+
+        <div class="product-label"> <!--type of cinnamon roll-->
+          <h2> Raisin Cinnamon Roll</h2>
+        </div>
+
+        <div class="product-choices-2rows"> <!--glazing & pack size selection rows-->
+          <div class="product-choice-row">
+            <div class="product-choice-row-text">
+              <p>Glazing:</p>
+            </div>
+            <select id="2-glaze" onchange = "updateGlazeOption('2')">
+              <option value = 0 class="option">Keep Original</option>
+              <option value = 1 class="option">Sugar Milk</option>
+              <option value = 2 class="option">Vanilla Milk</option>
+              <option value = 3 class="option">Double Chocolate</option>
+            </select>
+          </div>
+
+          <div class="product-choice-row">
+            <div class="product-choice-row-text">
+            <p> Pack Size:</p>
+            </div>
+
+            <div class="pack-size" id="original">
+              <button class="pack-size-btn pack-size-selected-btn" onclick = "updatePackSize(this, 2, 1)"> <p>1</p> </button>
+              <button class="pack-size-btn" onclick = "updatePackSize(this, 2, 3)"> <p>3</p> </button>
+              <button class="pack-size-btn" onclick = "updatePackSize(this, 2, 6)"> <p>6</p> </button>
+              <button class="pack-size-btn" onclick = "updatePackSize(this, 2, 12)"> <p>12</p> </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-choice-last-row"> <!--price & add to cart row-->
+          <h3 id="price-2">$2.99</h3>
+          <button class="add-to-cart-btn" onclick = "popupFxns(this, 2)">
+            <h2>Add to Cart</h2>
+          </button>
+        </div>
+      </div>
+
+      <!-- Walnut Cinnamon Roll-->
+      <div class="product">
+        <img class="product-img" src="Hmwk-2-Assets/walnut-cinnamon-roll.jpg" alt="walnut cinnamon roll" width="300px">
+
+        <div class="product-label"> <!--type of cinnamon roll-->
+          <h2> Walnut Cinnamon Roll</h2>
+        </div>
+
+        <div class="product-choices-2rows"> <!--glazing & pack size selection rows-->
+          <div class="product-choice-row">
+            <div class="product-choice-row-text">
+              <p>Glazing:</p>
+            </div>
+            <select id="3-glaze" onchange = "updateGlazeOption('3')">
+              <option value = 0 class="option">Keep Original</option>
+              <option value = 1 class="option">Sugar Milk</option>
+              <option value = 2 class="option">Vanilla Milk</option>
+              <option value = 3 class="option">Double Chocolate</option>
+            </select>
+          </div>
+
+          <div class="product-choice-row">
+            <div class="product-choice-row-text">
+            <p> Pack Size:</p>
+            </div>
+
+            <div class="pack-size" id="original">
+              <button class="pack-size-btn pack-size-selected-btn" onclick = "updatePackSize(this, 3, 1)"> <p>1</p> </button>
+              <button class="pack-size-btn" onclick = "updatePackSize(this, 3, 3)"> <p>3</p> </button>
+              <button class="pack-size-btn" onclick = "updatePackSize(this, 3, 6)"> <p>6</p> </button>
+              <button class="pack-size-btn" onclick = "updatePackSize(this, 3, 12)"> <p>12</p> </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-choice-last-row"> <!--price & add to cart row-->
+          <h3 id="price-3">$3.49</h3>
+          <button class="add-to-cart-btn" onclick = "popupFxns(this, 3)">
+            <h2>Add to Cart</h2>
+          </button>
+        </div>
+      </div>
+
+      <!-- Double Chocolate Cinnamon Roll-->
+      <div class="product">
+        <img class="product-img" src="Hmwk-2-Assets/double-chocolate-cinnamon-roll.jpg" alt="double chocolate cinnamon roll" width="300px">
+
+        <div class="product-label"> <!--type of cinnamon roll-->
+          <h2> Double Chocolate Cinnamon Roll</h2>
+        </div>
+
+        <div class="product-choices-2rows"> <!--glazing & pack size selection rows-->
+          <div class="product-choice-row">
+            <div class="product-choice-row-text">
+              <p>Glazing:</p>
+            </div>
+            <select id="4-glaze" onchange = "updateGlazeOption('4')">
+              <option value = 0 class="option">Keep Original</option>
+              <option value = 1 class="option">Sugar Milk</option>
+              <option value = 2 class="option">Vanilla Milk</option>
+              <option value = 3 class="option">Double Chocolate</option>
+            </select>
+          </div>
+
+          <div class="product-choice-row">
+            <div class="product-choice-row-text">
+            <p> Pack Size:</p>
+            </div>
+
+            <div class="pack-size" id="original">
+              <button class="pack-size-btn pack-size-selected-btn" onclick = "updatePackSize(this, 4, 1)"> <p>1</p> </button>
+              <button class="pack-size-btn" onclick = "updatePackSize(this, 4, 3)"> <p>3</p> </button>
+              <button class="pack-size-btn" onclick = "updatePackSize(this, 4, 6)"> <p>6</p> </button>
+              <button class="pack-size-btn" onclick = "updatePackSize(this, 4, 12)"> <p>12</p> </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-choice-last-row"> <!--price & add to cart row-->
+          <h3 id="price-4">$3.99</h3>
+          <button class="add-to-cart-btn" onclick = "popupFxns(this, 4)">
+            <h2>Add to Cart</h2>
+          </button>
+        </div>
+      </div>
+
+      <!-- Strawberry Cinnamon Roll-->
+      <div class="product">
+        <img class="product-img" src="hmwk-2-assets/strawberry-cinnamon-roll.jpg" alt="strawberry cinnamon roll" width="300px">
+
+        <div class="product-label"> <!--type of cinnamon roll-->
+          <h2> Strawberry Cinnamon Roll</h2>
+        </div>
+
+        <div class="product-choices-2rows"> <!--glazing & pack size selection rows-->
+          <div class="product-choice-row">
+            <div class="product-choice-row-text">
+              <p>Glazing:</p>
+            </div>
+            <select id="5-glaze" onchange = "updateGlazeOption('5')">
+              <option value = 0 class="option">Keep Original</option>
+              <option value = 1 class="option">Sugar Milk</option>
+              <option value = 2 class="option">Vanilla Milk</option>
+              <option value = 3 class="option">Double Chocolate</option>
+            </select>
+          </div>
+
+          <div class="product-choice-row">
+            <div class="product-choice-row-text">
+            <p> Pack Size:</p>
+            </div>
+
+            <div class="pack-size" id="original">
+              <button class="pack-size-btn pack-size-selected-btn" onclick = "updatePackSize(this, 5, 1)"> <p>1</p> </button>
+              <button class="pack-size-btn" onclick = "updatePackSize(this, 5, 3)"> <p>3</p> </button>
+              <button class="pack-size-btn" onclick = "updatePackSize(this, 5, 6)"> <p>6</p> </button>
+              <button class="pack-size-btn" onclick = "updatePackSize(this, 5, 12)"> <p>12</p> </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-choice-last-row"> <!--price & add to cart row-->
+          <h3 id="price-5">$3.99</h3>
+          <button class="add-to-cart-btn" onclick = "popupFxns(this, 5)">
+            <h2>Add to Cart</h2>
+          </button>
+        </div>
+      </div>
+
+    </div>
   </body>
 </html>
