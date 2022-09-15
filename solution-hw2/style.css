@@ -113,7 +113,7 @@ p {
     align-items: center;
 }
 
-.pack-size-btn {
+.pack-size-btn {/*individual unselected pack size btns*/
     display: flex;
     background-color: white;
     justify-content: center;
@@ -152,7 +152,7 @@ p {
     width: 60%;
 }
 
-#popup {
+#popup { /*popup w/ newest card addition info, appears when add-to-cart clicked, disappears after 3 seconds*/
     visibility: hidden;
     position: absolute;
     background-color: white;
@@ -165,7 +165,7 @@ p {
     border: 2px solid rgb(198, 198, 198);
 }
 
-#popup.show {
+#popup.show { /*add show class when user clicks add-to-cart*/
     visibility: visible;
     position: absolute;
 }
@@ -178,12 +178,12 @@ p {
 
 }
 
-#cart-items, #price-total {
+#cart-items, #price-total {/*text shown under CART*/
     font-size: 80%;  
     margin: 0px 0px 0px 0px;  
 }
 
-.popup-text {
+.popup-text {/*popup text*/
     font-size: 30%;
     text-align: left;
 }

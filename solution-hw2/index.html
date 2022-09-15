@@ -22,12 +22,12 @@
           </div>
         </div>
 
-        <div class="cart">
+        <div class="cart"> <!--info permanently showing under "CART"-->
           <p id ="cart-items" class="cart-text">1 item</p>
           <p id="price-total" class="cart-text">Total: $0.00</p>
         </div>
 
-        <div id="popup">
+        <div id="popup"> <!--popup w/ newest cart addition info-->
           <p id="added-to-cart" class="popup-text">Added to Cart:</p>
           <p id="new-item" class="popup-text">Raisin cinnamon roll</p>
           <p id="new-item-glaze" class="popup-text">Double Chocolate Glazing</p>
@@ -53,7 +53,7 @@
             <div class="product-choice-row-text">
               <p>Glazing:</p>
             </div>
-            <select id="0-glaze" onchange = "updateGlazeOption('0')">
+            <select id="0-glaze" onchange = "updateGlazeOption('0')"> <!--when user switches glaze option, price displayed & roll object are updated-->
               <option value = 0 class="option">Keep Original</option>
               <option value = 1 class="option">Sugar Milk</option>
               <option value = 2 class="option">Vanilla Milk</option>
@@ -66,7 +66,7 @@
             <p> Pack Size:</p>
             </div>
 
-            <div class="pack-size">
+            <div class="pack-size"><!--when pack size is changed, price & roll object are updated-->
               <button class="pack-size-btn pack-size-selected-btn" onclick = "updatePackSize(this, 0, 1)"> <p>1</p> </button>
               <button class="pack-size-btn" onclick = "updatePackSize(this, 0, 3)"> <p>3</p> </button>
               <button class="pack-size-btn" onclick = "updatePackSize(this, 0, 6)"> <p>6</p> </button>
