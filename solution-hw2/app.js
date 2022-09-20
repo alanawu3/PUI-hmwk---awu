@@ -46,7 +46,6 @@ function callPopup(btn, rollNum) { //updates item total, price total, most recen
         document.getElementById('cart-items').innerHTML = cartTotals['items'] + ' items';
     }
     let priceTotal = cartTotals['priceTotal'].toFixed(2);
-    console.log(priceTotal);
     document.getElementById('price-total').innerHTML = "$ " + priceTotal;
 
     let popup = document.getElementById("popup");
