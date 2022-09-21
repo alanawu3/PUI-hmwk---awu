@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/PUI-hmwk---awu/solution-hw3-new/static/css/main.7711b6df.css",
-    "main.js": "/PUI-hmwk---awu/solution-hw3-new/static/js/main.1bc32bee.js",
+    "main.js": "/PUI-hmwk---awu/solution-hw3-new/static/js/main.70ac5977.js",
     "static/js/787.406f5c32.chunk.js": "/PUI-hmwk---awu/solution-hw3-new/static/js/787.406f5c32.chunk.js",
     "index.html": "/PUI-hmwk---awu/solution-hw3-new/index.html",
     "main.7711b6df.css.map": "/PUI-hmwk---awu/solution-hw3-new/static/css/main.7711b6df.css.map",
-    "main.1bc32bee.js.map": "/PUI-hmwk---awu/solution-hw3-new/static/js/main.1bc32bee.js.map",
+    "main.70ac5977.js.map": "/PUI-hmwk---awu/solution-hw3-new/static/js/main.70ac5977.js.map",
     "787.406f5c32.chunk.js.map": "/PUI-hmwk---awu/solution-hw3-new/static/js/787.406f5c32.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.7711b6df.css",
-    "static/js/main.1bc32bee.js"
+    "static/js/main.70ac5977.js"
   ]
 }
