@@ -18,7 +18,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build -b main -e solution-hw3/pui-hw3"
+    "deploy": "gh-pages -d build -b main -e pui-hw3"
   },
   "eslintConfig": {
     "extends": [
