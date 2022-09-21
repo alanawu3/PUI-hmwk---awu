@@ -6,7 +6,6 @@ function App() {
     <div>
       <Navbar />
       <div className="products">
-        <p>Random changes!</p>
         <Product name="Original Cinnamon Roll" price="2.49" imgSrc="assets/original-cinnamon-roll.jpg"/>
         <Product name="Apple Cinnamon Roll" price="3.49" imgSrc="assets/apple-cinnamon-roll.jpg"/>
         <Product name="Raisin Cinnamon Roll" price="2.99" imgSrc="assets/raisin-cinnamon-roll.jpg"/>
