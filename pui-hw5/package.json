@@ -1,5 +1,5 @@
 {
-  "homepage": "https://alanawu3.github.io/PUI-hmwk---awu/pui-hw5",
+  "homepage": "https://alanawu3.github.io/PUI-hmwk---awu/PUI-HW5",
   "name": "pui-hw5",
   "version": "0.1.0",
   "private": true,
@@ -18,7 +18,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build -e pui-hw5"
+    "deploy": "gh-pages -d build -e PUI-HW5"
   },
   "eslintConfig": {
     "extends": [
