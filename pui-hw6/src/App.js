@@ -9,7 +9,12 @@ function App() {
   const [newRoll, setNewRoll] = useState(""); //type, glaze, pack, price of newly added roll
   const [popup, setShowPopup] = useState(false); //show or not show popup rn
   const [rolls, setRolls] = useState([]); //array of all rolls? or those currenlty being shown...?
-  const [cartRolls, setCartRolls] = useState(JSON.parse(localStorage.getItem("cart")));
+  if (JSON.parse(localStorage.getItem("cart")) != null) {
+    const [cartRolls, setCartRolls] = useState(JSON.parse(localStorage.getItem("cart")));
+  }
+  else {
+    const [cartRolls, setCartRolls] = useState([]);
+  }
   const [filterCategory, setFilterCategory] = useState(''); //what was just put into the search bar?
   const [sortCategory, setSortCategory] = useState(null); //no sort category, by name, or by price
   const [showCart, setShowCart] = useState(false);
