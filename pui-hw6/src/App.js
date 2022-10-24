@@ -14,14 +14,11 @@ function App() {
   const [sortCategory, setSortCategory] = useState(null); //no sort category, by name, or by price
   const [showCart, setShowCart] = useState(false);
 
-  console.log('HELLO');
-  if (JSON.parse(localStorage.getItem('cart')) == null) {
-    setCartRolls([]);
-    console.log('HI THERE');
-    console.log(cartRolls);
-  }
-
   useEffect(() => {
+    if (JSON.parse(localStorage.getItem("cart")) == null) {
+      setCartRolls([]);
+      console.log('cartRolls: ' + cartRolls);
+    }
     setTotalPrice(0.00);
     setNumItems(0);
     setNewRoll("");
