@@ -14,6 +14,10 @@ function App() {
   const [sortCategory, setSortCategory] = useState(null); //no sort category, by name, or by price
   const [showCart, setShowCart] = useState(false);
 
+  if (JSON.parse(localStorage.getItem('cart')) == null) {
+    setCartRolls([]);
+  }
+
   useEffect(() => {
     setTotalPrice(0.00);
     setNumItems(0);
