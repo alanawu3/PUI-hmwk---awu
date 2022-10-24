@@ -1,15 +1,10 @@
 import './navbar.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import CartComponent from '../cart/cartComponent';
 
 
 function NavHook(props) {
   const [searchText, setSearchText] = useState('');
-  const [showingCart, setShowingCart] = useState(false);
-  
-  useEffect(() => {
-  props.setShowCart(!props.showCart);
-  }, [showingCart])
 
   return props.showCart ? ( //if we need to show the cart, display the following
     <div className="nav-column">
@@ -22,7 +17,7 @@ function NavHook(props) {
           </div>
     
           <div className="page-title">
-            <h2 onClick={() => setShowingCart(!showingCart)} className="nav-link"> CART</h2>
+            <h2 onClick={() => props.setShowCart(!props.showCart)} className="nav-link"> CART</h2>
           </div>
         </div>
         <hr/>
@@ -31,7 +26,7 @@ function NavHook(props) {
     </div>
 
     <CartComponent updateApp={props.updateApp} setUpdateApp={props.setUpdateApp}
-    setTotalPrice={props.setTotalPrice} totalPrice={props.totalPrice} setCartRolls={props.setCartRolls}cartRolls={props.cartRolls}/>
+    setTotalPrice={props.setTotalPrice} totalPrice={props.totalPrice} cartRolls={props.cartRolls}/>
 
     <div className="filter-features" style = {{display: 'inline-flex', marginLeft: '8%'}}>
       <form action="/action_page.php">
@@ -54,8 +49,7 @@ function NavHook(props) {
           </div>
     
           <div className="page-title">
-            {/*infinite loop is caused with cannot edit App state while in navbar comp. when Cart is clicked*/}
-            <h2 onClick={() => setShowingCart(!showingCart)} className="nav-link"> CART</h2>
+            <h2 onClick={() => props.setShowCart(!props.showCart)} className="nav-link"> CART</h2>
           </div>
         </div>
         <hr/>

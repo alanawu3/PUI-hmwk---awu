@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 function CartComponent(props) {
-    const [rollToDelete, setRollToDelete] = useState([]); //array of rolls you want to delete
     const hrStyle = {
         background: 'brown',
         height: '8px',
@@ -38,34 +37,21 @@ function CartComponent(props) {
             i += 1;
         }
         localStorage.clear();
-        localStorage.setItem('cartRolls', JSON.stringify(props.cartRolls));
+        localStorage.setItem('cart', JSON.stringify(props.cartRolls));
         props.setUpdateApp(!props.updateApp);
         props.setTotalPrice(props.totalPrice - price);
     }
 
-    useEffect(() => {
-        console.log(rollToDelete);
-        const thisRollID = rollToDelete[-1]['rollID'];
-        const thisRollPrice = rollToDelete[-1]['name'];
-        deleteRoll(thisRollID, thisRollPrice);
-    }, [rollToDelete])
-
-    // useEffect(() => {
-    //     localStorage.clear();
-    //     localStorage.setItem('cartRolls', JSON.stringify(props.cartRolls));
-    //     props.setUpdateApp(!props.updateApp);
-    //     props.setTotalPrice(props.totalPrice - price);
-    //   }, [props.cartRolls])
-
     //if there are items in the cart, display the following
-    return (localStorage.length > 0) ? (
+    return (props.cartRolls.length > 0) ? (
     <div>
         <hr style={hrStyle}></hr>
         <p style={{fontSize: '15px', display: 'inline', marginLeft: '25px'}}>Shopping Cart ({props.cartRolls.length} items)</p>
         <p style={{fontSize: '15px', display: 'inline', marginLeft:'60%'}}>Total: ${Number(props.totalPrice).toFixed(2)}</p>
         <div style={cartStyle}>
-        {props.setCartRolls(JSON.parse(localStorage.getItem('cartRolls')))}
-        {props.cartRolls.map(
+        {console.log(JSON.parse(localStorage.getItem('cart')))}
+        {
+        props.cartRolls.map(
             (roll) =>
             {
                 const pStyle = {
@@ -89,8 +75,7 @@ function CartComponent(props) {
                     <p style={pStyle}>Glaze: {roll.glaze}</p>
                     <p style={pStyle}>Pack Size: {roll.pack}</p>
                     <p style={pStyle}><b>$ {roll.price}</b></p>
-                    <p onClick={() => rollToDelete.push({'ID': roll.rollID, 'price': roll.price})} style={pStyle}><u>Remove</u></p>
-                    {/*<p onClick={() => deleteRoll(roll.rollID, roll.price)} style={pStyle}><u>Remove</u></p> */} 
+                    <p onClick={() => deleteRoll(roll.rollID, roll.price)} style={pStyle}><u>Remove</u></p>  
                     </div>
 
                 </div>

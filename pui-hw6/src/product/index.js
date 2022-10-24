@@ -54,9 +54,9 @@ function ProductHook(props) { //pass in props so we can see which roll we're cur
         pack: packSizes[packSize],
         price: rollPrice
       }
-      props.cartRolls.push(newRoll); //adds new roll to cartRolls array
       localStorage.clear();
-      localStorage.setItem('cartRolls', JSON.stringify(props.cartRolls));
+      props.cartRolls.push(newRoll); //adds new roll to cartRolls array
+      localStorage.setItem('cart', JSON.stringify(props.cartRolls));
     }
 
     const addToCartFxns = (props)=> {

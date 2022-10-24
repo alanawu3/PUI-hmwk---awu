@@ -9,13 +9,10 @@ function App() {
   const [newRoll, setNewRoll] = useState(""); //type, glaze, pack, price of newly added roll
   const [popup, setShowPopup] = useState(false); //show or not show popup rn
   const [rolls, setRolls] = useState([]); //array of all rolls? or those currenlty being shown...?
-  const [cartRolls, setCartRolls] = useState([]);
+  const [cartRolls, setCartRolls] = useState(JSON.parse(localStorage.getItem("cart")));
   const [filterCategory, setFilterCategory] = useState(''); //what was just put into the search bar?
   const [sortCategory, setSortCategory] = useState(null); //no sort category, by name, or by price
   const [showCart, setShowCart] = useState(false);
-  useEffect(() => {
-    setShowCart();
-  }, [])
 
   useEffect(() => {
     setTotalPrice(0.00);
@@ -79,7 +76,7 @@ function App() {
 
   return (
     <div>
-      <Navbar updateApp={updateApp} setUpdateApp={setUpdateApp} setCartRolls={setCartRolls} cartRolls = {cartRolls} showCart = {showCart} setShowCart={setShowCart} numItems = {numItems} setTotalPrice={setTotalPrice} totalPrice = {totalPrice} newRoll = {newRoll} popup = {popup}  setFilterCategory = {setFilterCategory} setSortCategory = {setSortCategory}/>
+      <Navbar updateApp={updateApp} setUpdateApp={setUpdateApp} cartRolls = {cartRolls} showCart = {showCart} setShowCart={setShowCart} numItems = {numItems} setTotalPrice={setTotalPrice} totalPrice = {totalPrice} newRoll = {newRoll} popup = {popup}  setFilterCategory = {setFilterCategory} setSortCategory = {setSortCategory}/>
       <div className="products">
         {noMatch = true}
         {rolls.map(
