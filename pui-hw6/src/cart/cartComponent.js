@@ -42,6 +42,10 @@ function CartComponent(props) {
         props.setTotalPrice(props.totalPrice - price);
     }
 
+    if (JSON.parse(localStorage.getItem('cart')) == null) {
+        props.cartRolls = [];
+    }
+
     //if there are items in the cart, display the following
     return (props.cartRolls.length > 0) ? (
     <div>
@@ -50,8 +54,7 @@ function CartComponent(props) {
         <p style={{fontSize: '15px', display: 'inline', marginLeft:'60%'}}>Total: ${Number(props.totalPrice).toFixed(2)}</p>
         <div style={cartStyle}>
         {console.log(JSON.parse(localStorage.getItem('cart')))}
-        {
-        props.cartRolls.map(
+        {props.cartRolls.map(
             (roll) =>
             {
                 const pStyle = {
