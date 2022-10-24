@@ -16,6 +16,8 @@ function App() {
 
   if (JSON.parse(localStorage.getItem('cart')) == null) {
     setCartRolls([]);
+    console.log('HI THERE');
+    console.log(cartRolls);
   }
 
   useEffect(() => {
