@@ -1,0 +1,39 @@
+:root {
+  --startColor: #ff8080;
+  --stopColor: #ff8080;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100vh;
+  place-items: center;
+  display: grid;
+}
+
+svg {
+  width: 90vmin;
+  height: 90vmin;
+}
+
+path {
+  cursor: pointer;
+}
+
+p {
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: system-ui, sans-serif;
+  font-size: 1.125rem;
+  font-weight: 500;
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+}
+
+/*# sourceMappingURL=index.3a01df49.css.map */
