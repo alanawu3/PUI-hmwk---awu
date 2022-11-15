@@ -167,21 +167,25 @@ function App() {
       backgroundColor: '#FECA13',
       border: '3px solid red'
   }
-  //individual slider styles?
-  const sliderStyle = {
 
-  }
+  const sliderStyle = {
+    margin: '30px 5px 30px 5px'
+}
 
   return (
+    //WHY ISN'T SHAPE COMPONENT RENDERING INSIDE OF PAGE DIV
     <div style={pageStyle}>
       <Shape happy={happy} sad={sad} excited={excited} tired={tired} angry={angry}
       worried={worried} calm={calm} anxious={anxious} numShapes={numShapes}/>
       <div style={sidebarStyle}>
-        <Slider
-          style={sliderStyle}
-          value={happy}
-          setValue={setHappy}
-        />
+        <div style={sliderStyle}><Slider value={happy} setValue={setHappy} /></div>
+        <h1>{happy}</h1>
+        <div style={sliderStyle}><Slider value={sad} setValue={setSad}/></div>
+        <h1>{sad}</h1>
+        <div style={sliderStyle}><Slider value={excited} setValue={setExcited}/></div>
+        <h1>{excited}</h1>
+        <div style={sliderStyle}><Slider value={tired} setValue={setTired}/></div>
+        <h1>{tired}</h1>
       </div>
     </div>
 );
