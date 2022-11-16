@@ -20,10 +20,10 @@ import Shape from './Shape';
 
 function App() {
   //emotions on a scale 0 - 100
-  const [happy, setHappy] = useState(1);
-  const [sad, setSad] = useState(1);
-  const [excited, setExcited] = useState(1);
-  const [tired, setTired] = useState(1);
+  const [happy, setHappy] = useState(0);
+  const [sad, setSad] = useState(0);
+  const [excited, setExcited] = useState(0);
+  const [tired, setTired] = useState(0);
   const [angry, setAngry] = useState(1);
   const [worried, setWorried] = useState(1);
   const [calm, setCalm] = useState(1);
@@ -158,18 +158,21 @@ function App() {
     backgroundColor: 'black',
     border: '3px solid blue',
     height: window.innerHeight,
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    flexDirection: 'row'
   }
 
   const sidebarStyle = {
       width: '20%',
       height: window.innerHeight,
       backgroundColor: '#FECA13',
-      border: '3px solid red'
+      border: '3px solid red',
+      textAlign: 'center'
   }
 
   const sliderStyle = {
-    margin: '30px 5px 30px 5px'
+    margin: '30px 5px 30px 5px',
+    border: '3px dashed blue'
 }
 
   return (
@@ -178,14 +181,14 @@ function App() {
       <Shape happy={happy} sad={sad} excited={excited} tired={tired} angry={angry}
       worried={worried} calm={calm} anxious={anxious} numShapes={numShapes}/>
       <div style={sidebarStyle}>
+        <h3>happy {happy}</h3>
         <div style={sliderStyle}><Slider value={happy} setValue={setHappy} /></div>
-        <h1>{happy}</h1>
+        <h3>sad {sad}</h3>
         <div style={sliderStyle}><Slider value={sad} setValue={setSad}/></div>
-        <h1>{sad}</h1>
+        <h3>excited {excited}</h3>
         <div style={sliderStyle}><Slider value={excited} setValue={setExcited}/></div>
-        <h1>{excited}</h1>
+        <h3>tired {tired}</h3>
         <div style={sliderStyle}><Slider value={tired} setValue={setTired}/></div>
-        <h1>{tired}</h1>
       </div>
     </div>
 );

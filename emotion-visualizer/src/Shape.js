@@ -20,53 +20,100 @@ const Shape = (props) => {
 
   const [change, setChange] = useState(0);
   const [np, setNP] = useState(100) // how many particles
-  const [gravity, setGravity] = useState(.2 - props.happy/100) // downward acceleration
+  const [gravity, setGravity] = useState(0) // downward acceleration
   const[spring, setSpring] = useState(.9) // how much velocity is retained after bounce
   const [drag, setDrag] = useState(0.0001) // drag causes particles to slow down
   const [speedFactor, setSpeedFactor] = useState(1);
+  const [fluxOffset, setFluxOffset] = useState(1);
 
   const [pulse, setPulse] = useState(false);
 
   //r, g, b, dx, dy, numShapes, gravity, roughness, drag, randomness
   //use props to calculate what to set all the states below to
-  const [targetR, setTargetR] = useState(props.happy * 2.55);
-  const [targetG, setTargetG] = useState(props.happy * 2.55);
-  const [targetB, setTargetB] = useState(255 - props.happy * 4);
+  const [targetR, setTargetR] = useState(100);
+  const [targetG, setTargetG] = useState(100);
+  const [targetB, setTargetB] = useState(100);
   
   useEffect(() => {
-    setTargetR((props.happy+props.excited) * 2.9 - props.sad * 2.55);
-    setTargetG((props.happy + props.excited) * 2 - props.sad*2.55);
-    setTargetB(265 - (props.happy*3 + props.excited) + props.sad * 2.55);
+    setTargetR(100 + (props.happy+props.excited) - props.sad * 2.55);
+    setTargetG(100 + (props.happy + props.excited) - props.sad*2.55);
+    setTargetB(100 + props.happy * -3 - props.excited + props.sad * 2.55);
+    //when all are 0, blob needs to be gray
     // console.log(targetR)
     // console.log(targetG)
     // console.log(targetB)
     setSpeedFactor(props.excited/20 + 1)
-    updateNums()
     setNumOrgs(Math.max(10, props.happy + props.excited - props.sad - props.tired))
-    setGravity(Math.max(-.05, .2 - props.happy*0.003 + props.sad*0.004 + props.tired*0.004 - props.excited*.003))
-  }, [props.happy, props.sad, props.excited])
+    setNumShapes(Math.floor(Math.max(1, props.excited/30)))
+    setFluxOffset(Math.max(0, props.excited/50 - props.tired/50));
+    console.log('fluxOffset: ' + fluxOffset);
+    updateNums()
+    setGravity(Math.max(-.05, .2 * props.happy*-0.003 + props.sad*0.004 + props.tired*0.004 - props.excited*.003))
+  }, [props.happy, props.sad, props.excited, props.tired])
+
+  const random = (min, max) => {
+    return Math.floor(Math.random() * (max - min) ) + min;
+  }
 
   const updateNums = () => {
+    while (shapes.length < numShapes) {
+      let orgShape = [];
+      const startX = random(0, window.innerWidth);
+      const startY = random(0, window.innerHeight);
+      for (let i = 0; i < numOrgs; i++) {
+        orgShape.push(
+          {
+            age: 0,
+            radius: (.1 + i),
+            x: startX,
+            y: startY,
+            dx: 0,
+            dy: 0,
+            roughness: i * 1,
+            angle: i + random(-50, 50),
+            r: 100,
+            g: 100,
+            b: 100,
+            dr: 1,
+            dg: 1,
+            db: 1,
+            show: show,
+            step: step
+          })
+      }
+    shapes.push(orgShape);
+    }
+    while (shapes.length > numShapes) {
+      shapes.pop();
+    }
     for (let i = 0; i < shapes.length; i++) {
       const currShape = shapes[i];
       while (currShape.length > numOrgs) {
         currShape.shift();
+      }
+      const newDX = random(-5, 5);
+      const newDY = random(-5, 5);
+      for (let j = 0; j < currShape.length; j++) {
+        currShape[j].dx = newDX;
+        currShape[j].dy = newDY;
       }
     }
   }
 
   const show = (p5, org) => {
     p5.noStroke(); // no stroke for the circle
-    p5.fill(org.r + p5.random(-50, 50), org.g + p5.random(-50, 50), org.b + p5.random(-50, 50), 30);
-    
-    p5.push(); 
+    //const colorOffset = random(-100, 100);
+    p5.fill(org.r, org.g, org.b, 30);
+    p5.push();
     p5.translate(org.x, org.y); //move to x, y
     p5.rotate(org.angle + change); //rotate by this.angle+change
     p5.beginShape(); 
     //The lines below create our vertex points
     let off = 0;
     for (let i = 0; i < Math.PI*2; i += 0.1) {
-      let offset = p5.map(p5.noise(off, change), 0, 1, -(org.roughness + props.excited/100), org.roughness + props.excited/100);
+      let offset = p5.map(p5.noise(off, change), 0, 1, -org.roughness, org.roughness);
+      //more excited = bigger range, more tired = smaller range
+      //let offset = p5.map(p5.noise(off, change), 0, 1, -50, 50);
       let r = org.radius + offset;
       let x = r * Math.cos(i);
       let y = r * Math.sin(i);
@@ -103,21 +150,21 @@ const Shape = (props) => {
     }
   
     if (org.x > p5.width - maxRad) { // bounce off right wall
-      //org.x = p5.width - (org.x - p5.width)
+      org.x -= 5;
       org.dx = -org.dx * spring;
     } else if (org.x < maxRad) { // bounce off left wall
-      //org.x *= -1;
+      org.x += 5;
       org.dx = -org.dx * spring; 
     }
     if (org.y > p5.height - maxRad) { // p5.height - org.radius HERE CREATES A TAIL bounce off bottom
-      //org.y = p5.height - (org.y - p5.height);
+      org.y -= 5;
       org.dy = (-org.dy * spring);
     } else if (org.y < maxRad) { // bounce off top
-      //org.y *= -1;
+      org.y += 5;
       org.dy = -org.dy * spring
     }
     org.dy += gravity;
-    console.log('grav: ' + gravity)
+    //console.log('grav: ' + gravity)
     // drag is proportional to velocity squared
     // which is the sum of the squares of dx and dy
     
@@ -132,10 +179,9 @@ const Shape = (props) => {
     org.dy = org.dy * (1 - d);
   }
 
-  const setup = (p5) => {
+  const setup = p5 => {
     p5.createCanvas(800, 800);
     p5.frameRate(50);
-    //noLoop();
     
     let orgShape = [];
     for (let i = 0; i < numOrgs; i++) {
@@ -145,9 +191,9 @@ const Shape = (props) => {
           radius: (.1 + i),
           x: p5.width/2,
           y: p5.height/2,
-          dx: -5,
-          dy: 5,
-          roughness: i * 1,
+          dx: 0,
+          dy: 0,
+          roughness: i * .6,
           angle: i * p5.random(45),
           r: 100,
           g: 100,
@@ -166,8 +212,6 @@ const Shape = (props) => {
     p5.background(0, 0, 0, 30);
     p5.stroke(0);
     p5.strokeWeight(10);
-    let ax = Math.random(-1, 1);
-    let ay = Math.random(-1, 1);
 
     //loop through shapes array
     for (let i = 0; i < shapes.length; i++) {
