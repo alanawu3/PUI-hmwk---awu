@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { spline } from '@georgedoescode/spline';
-import SimplexNoise from 'simplex-noise';
-import { createNoise2D } from 'simplex-noise';
-
 import Sketch from 'react-p5'
-import p5 from 'p5'
 
 //organic code citation: https://editor.p5js.org/kmicheli/sketches/HkJp9lt0Q
 
@@ -21,32 +16,31 @@ const Shape = (props) => {
   const [change, setChange] = useState(0);
   const [np, setNP] = useState(100) // how many particles
   const [gravity, setGravity] = useState(0) // downward acceleration
-  const[spring, setSpring] = useState(.9) // how much velocity is retained after bounce
+  const [spring, setSpring] = useState(.9) // how much velocity is retained after bounce
   const [drag, setDrag] = useState(0.0001) // drag causes particles to slow down
   const [speedFactor, setSpeedFactor] = useState(1);
   const [fluxOffset, setFluxOffset] = useState(1);
+  const [firstRender, setFirstRender] = useState(false)
 
   const [pulse, setPulse] = useState(false);
 
   //r, g, b, dx, dy, numShapes, gravity, roughness, drag, randomness
-  //use props to calculate what to set all the states below to
   const [targetR, setTargetR] = useState(100);
   const [targetG, setTargetG] = useState(100);
   const [targetB, setTargetB] = useState(100);
   
   useEffect(() => {
-    setTargetR(100 + (props.happy+props.excited) - props.sad * 2.55);
-    setTargetG(100 + (props.happy + props.excited) - props.sad*2.55);
-    setTargetB(100 + props.happy * -3 - props.excited + props.sad * 2.55);
-    //when all are 0, blob needs to be gray
-    // console.log(targetR)
-    // console.log(targetG)
-    // console.log(targetB)
-    setSpeedFactor(props.excited/20 + 1)
+    console.log(props.angry);
+    setTargetR(100 + props.happy + props.excited + props.angry * 5 - props.sad);
+    setTargetG(100 + (props.happy + props.excited)*.7 - props.sad);
+    setTargetB(100 - props.happy - props.excited + props.sad/3);
+    console.log(targetR, targetG, targetB)
+    setSpeedFactor(props.excited/20 + props.happy/50 + 1)
     setNumOrgs(Math.max(10, props.happy + props.excited - props.sad - props.tired))
-    setNumShapes(Math.floor(Math.max(1, props.excited/30)))
-    setFluxOffset(Math.max(0, props.excited/50 - props.tired/50));
-    console.log('fluxOffset: ' + fluxOffset);
+    setNumShapes(Math.floor(Math.max(1, props.excited/10)))
+    //setFluxOffset(p5.map(props.excited - props.tired, -props.tired, props.excited, 0, 2));
+    setFluxOffset((props.excited - props.tired)/100 + 1)
+    //when both are zero, flux = 1, as tired increases flux gets closer to 0, as excited increases flux gets closer to 2
     updateNums()
     setGravity(Math.max(-.05, .2 * props.happy*-0.003 + props.sad*0.004 + props.tired*0.004 - props.excited*.003))
   }, [props.happy, props.sad, props.excited, props.tired])
@@ -74,6 +68,9 @@ const Shape = (props) => {
             r: 100,
             g: 100,
             b: 100,
+            rX: random(-50, 50),
+            gX: random(-50, 50),
+            bX: random(-50, 50),
             dr: 1,
             dg: 1,
             db: 1,
@@ -86,16 +83,23 @@ const Shape = (props) => {
     while (shapes.length > numShapes) {
       shapes.pop();
     }
-    for (let i = 0; i < shapes.length; i++) {
+    for (let i = 0; i < shapes.length; i++) { //loops thru shapes
       const currShape = shapes[i];
-      while (currShape.length > numOrgs) {
+      while (currShape.length > numOrgs) { //removes orgs until correct num
         currShape.shift();
       }
       const newDX = random(-5, 5);
       const newDY = random(-5, 5);
-      for (let j = 0; j < currShape.length; j++) {
-        currShape[j].dx = newDX;
-        currShape[j].dy = newDY;
+      for (let j = 0; j < currShape.length; j++) { //loops thru each org for each shape
+        //i want it to run every time EXCEPT when first rendered
+        if (firstRender) {
+          currShape[j].dx = newDX;
+          currShape[j].dy = newDY;
+        }
+        currShape[j].roughness = (fluxOffset + .1) * 50;
+        setFirstRender(true);
+        // console.log('fluxOffset: ' + fluxOffset);
+        // console.log('currOrg.roughness: ' + currShape[j].roughness)
       }
     }
   }
@@ -103,7 +107,7 @@ const Shape = (props) => {
   const show = (p5, org) => {
     p5.noStroke(); // no stroke for the circle
     //const colorOffset = random(-100, 100);
-    p5.fill(org.r, org.g, org.b, 30);
+    p5.fill(org.r + org.rX, org.g + org.gX, org.b + org.bX, 30);
     p5.push();
     p5.translate(org.x, org.y); //move to x, y
     p5.rotate(org.angle + change); //rotate by this.angle+change
@@ -149,38 +153,34 @@ const Shape = (props) => {
       org.b -= org.db;
     }
   
-    if (org.x > p5.width - maxRad) { // bounce off right wall
+    if (org.x > p5.width - maxRad) { //bounce off right wall
       org.x -= 5;
       org.dx = -org.dx * spring;
-    } else if (org.x < maxRad) { // bounce off left wall
+    } else if (org.x < maxRad) { //bounce off left wall
       org.x += 5;
       org.dx = -org.dx * spring; 
     }
-    if (org.y > p5.height - maxRad) { // p5.height - org.radius HERE CREATES A TAIL bounce off bottom
+    if (org.y > p5.height - maxRad) { //p5.height - org.radius HERE CREATES A TAIL bounce off bottom
       org.y -= 5;
       org.dy = (-org.dy * spring);
-    } else if (org.y < maxRad) { // bounce off top
+    } else if (org.y < maxRad) { //bounce off top
       org.y += 5;
       org.dy = -org.dy * spring
     }
     org.dy += gravity;
-    //console.log('grav: ' + gravity)
-    // drag is proportional to velocity squared
-    // which is the sum of the squares of dx and dy
-    
-    var vs = Math.pow(org.dx, 2) + Math.pow(org.dy, 2);
-    // d is the ratio of old velocty to new velocity
-    var d = vs * drag;
-    // d goes up with velocity squared but can never be
-    // so high that the velocity reverses, so limit d to 1
-    d = p5.min(d, .9);
-    // scale dx and dy to include drag effect
-    org.dx = org.dx * (1 - d);
+    var vs = Math.pow(org.dx, 2) + Math.pow(org.dy, 2); // drag is proportional to velocity squared which is the sum of the squares of dx and dy
+    var d = vs * drag; // d is the ratio of old velocty to new velocity
+    d = p5.min(d, .9); // d goes up with velocity squared but can never be so high that the velocity reverses, so limit d to 1
+    org.dx = org.dx * (1 - d);// scale dx and dy to include drag effect
     org.dy = org.dy * (1 - d);
   }
 
-  const setup = p5 => {
-    p5.createCanvas(800, 800);
+  const setup = (p5, canvasParentRef) => {
+    // canvasParentRef = <div className="canvasS..">
+    const canvasWidth = canvasParentRef.offsetWidth;
+    // const canvasHeight = canvasParentRef.offsetHeight; //sets to tiny height with this idk why
+    const canvasHeight = 789; 
+    p5.createCanvas(canvasWidth, canvasHeight).parent(canvasParentRef);
     p5.frameRate(50);
     
     let orgShape = [];
@@ -193,11 +193,14 @@ const Shape = (props) => {
           y: p5.height/2,
           dx: 0,
           dy: 0,
-          roughness: i * .6,
+          roughness: i * fluxOffset,
           angle: i * p5.random(45),
           r: 100,
           g: 100,
           b: 100,
+          rX: p5.random(-50, 50),
+          gX: p5.random(-50, 50),
+          bX: p5.random(-50, 50),
           dr: 1,
           dg: 1,
           db: 1,
