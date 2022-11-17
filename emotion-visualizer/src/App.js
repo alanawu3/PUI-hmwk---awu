@@ -60,7 +60,9 @@ function App() {
           <Slider value={sad} setValue={setSad}/>
           <Emoji onClick = {() => setDesolate(!desolate)} symbol="😭" label="desolate" /></div>
         <h3>excited {excited}</h3>
-        <div style={sliderStyle}><Slider value={excited} setValue={setExcited}/></div>
+        <div style={sliderStyle}>
+          <Slider value={excited} setValue={setExcited}/>
+          <Emoji onClick = {() => setHyper(!hyper)} symbol="🤪" label="hyper" /></div>
         <h3>tired {tired}</h3>
         <div style={sliderStyle}><Slider value={tired} setValue={setTired}/></div>
         <h3>angry {angry}</h3>

@@ -74,10 +74,12 @@ const Shape = (props) => {
     }
   }, [props.wonder])
 
-  useEffect(() => {
+  useEffect(() => { //rn hyper mode doesn't immediately trigger, but somehow does when i save again
     if (props.hyper) {
+      console.log('HYPE')
       setNumOrgs(10);
       setNumShapes(20);
+      setSpeedFactor(10);
     }
     else {
       setNumOrgs(Math.max(10, props.happy + props.excited - props.sad - props.tired))
