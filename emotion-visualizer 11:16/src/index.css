@@ -59,15 +59,3 @@ svg {
 path {
   cursor: pointer;
 }
-
-p {
-  position: absolute;
-  font-size: 1.125rem;
-  font-weight: 500;
-  bottom: 1rem;
-  right: 1rem;
-  color: #fff;
-  font-family: system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}

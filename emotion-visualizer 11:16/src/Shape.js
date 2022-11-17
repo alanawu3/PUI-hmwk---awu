@@ -3,22 +3,24 @@ import Sketch from 'react-p5'
 
 //organic code citation: https://editor.p5js.org/kmicheli/sketches/HkJp9lt0Q
 
+//calculate all parameters from props emotions
+//actually draw Organic objects
+
+
 
 const Shape = (props) => {
   const [shapes, setShapes] = useState([]); //array of individual shape data arrays (which contain organics objects)
   const [numOrgs, setNumOrgs] = useState(100); //num organics layered to make each shape
   const [numShapes, setNumShapes] = useState(1); //total number of shapes we want
-  const [scale, setScale] = useState(1);
 
   const [change, setChange] = useState(0);
-  const [dChange, setDChange] = useState(0.01);
   const [np, setNP] = useState(100) // how many particles
   const [gravity, setGravity] = useState(0) // downward acceleration
   const [spring, setSpring] = useState(.9) // how much velocity is retained after bounce
   const [drag, setDrag] = useState(0.0001) // drag causes particles to slow down
   const [speedFactor, setSpeedFactor] = useState(1);
   const [fluxOffset, setFluxOffset] = useState(1);
-  const [firstRender, setFirstRender] = useState(true)
+  const [firstRender, setFirstRender] = useState(false)
 
   const [pulse, setPulse] = useState(false);
 
@@ -28,62 +30,25 @@ const Shape = (props) => {
   const [targetB, setTargetB] = useState(100);
   
   useEffect(() => {
-    if (!firstRender & props.desolate) { 
-      console.log('foooooo')
-      setTargetR(10);
-      setTargetG(15);
-      setTargetB(90);
-      setSpeedFactor(1)
-      setNumOrgs(Math.max(10, props.happy + props.excited - props.sad - props.tired))
-      setNumShapes(Math.floor(Math.max(1, props.excited/10)))
-      setFluxOffset(.05) //when both are zero, flux = 1, as tired increases flux gets closer to 0, as excited increases flux gets closer to 2
-      updateNums();
-      setGravity(5);
-      setSpring(0);
-      setDChange(.01);
-      setScale(.2);
-    }
-    else if (!props.desolate) {
-      console.log('yayyayy')
-      setTargetR(100 + props.happy + props.excited + props.angry * 2.8 - props.sad);
-      setTargetG(100 + (props.happy + props.excited)*.7 - props.sad - props.angry);
-      setTargetB(100 - props.happy - props.excited + props.sad/3 - props.angry);
-      setSpeedFactor(props.excited/20 + props.happy/50 + 1)
-      setNumOrgs(Math.max(10, props.happy + props.excited - props.sad - props.tired))
-      setNumShapes(Math.floor(Math.max(1, props.excited/10)))
-      setFluxOffset((props.excited - props.tired/2)/100 + 1) //when both are zero, flux = 1, as tired increases flux gets closer to 0, as excited increases flux gets closer to 2
-      updateNums();
-      setGravity(Math.max(-.05, .2 * props.happy*-0.003 + props.sad*0.004 + props.tired*0.004 - props.excited*.003))
-      setSpring((props.happy + props.excited)/90);
-      setDChange(Math.max(.00001, 0.01 - props.tired/2000));
-      setScale(1);
-      setDrag(.0001 + props.tired/200)
-    }
-    }, [props.happy, props.sad, props.excited, props.tired, props.angry, props.desolate])
+    console.log(props.angry);
+    console.log("hello")
+    setTargetR(100 + props.happy + props.excited + props.angry * 5 - props.sad);
+    setTargetG(100 + (props.happy + props.excited)*.7 - props.sad);
+    setTargetB(100 - props.happy - props.excited + props.sad/3);
+    console.log(targetR, targetG, targetB)
+    setSpeedFactor(props.excited/20 + props.happy/50 + 1)
+    setNumOrgs(Math.max(10, props.happy + props.excited - props.sad - props.tired))
+    setNumShapes(Math.floor(Math.max(1, props.excited/10)))
+    //setFluxOffset(p5.map(props.excited - props.tired, -props.tired, props.excited, 0, 2));
+    setFluxOffset((props.excited - props.tired)/100 + 1)
+    //when both are zero, flux = 1, as tired increases flux gets closer to 0, as excited increases flux gets closer to 2
+    updateNums()
+    setGravity(Math.max(-.05, .2 * props.happy*-0.003 + props.sad*0.004 + props.tired*0.004 - props.excited*.003))
+  }, [props.happy, props.sad, props.excited, props.tired])
 
-  useEffect(() => {
-    setDChange(.02 + props.angry/100)
-  }, [props.angry])
-
-  useEffect(() => {
-    if (props.wonder) {
-      setNumOrgs(200);
-    }
-    else {
-      setNumOrgs(Math.max(10, props.happy + props.excited - props.sad - props.tired))
-    }
-  }, [props.wonder])
-
-  useEffect(() => {
-    if (props.hyper) {
-      setNumOrgs(10);
-      setNumShapes(20);
-    }
-    else {
-      setNumOrgs(Math.max(10, props.happy + props.excited - props.sad - props.tired))
-      setNumShapes(Math.floor(Math.max(1, props.excited/10)))
-    }
-  }, [props.hyper])
+  const random = (min, max) => {
+    return Math.floor(Math.random() * (max - min) ) + min;
+  }
 
   const updateNums = () => {
     while (shapes.length < numShapes) {
@@ -128,12 +93,14 @@ const Shape = (props) => {
       const newDY = random(-5, 5);
       for (let j = 0; j < currShape.length; j++) { //loops thru each org for each shape
         //i want it to run every time EXCEPT when first rendered
-        if (!firstRender) {
+        if (firstRender) {
           currShape[j].dx = newDX;
           currShape[j].dy = newDY;
         }
         currShape[j].roughness = (fluxOffset + .1) * 50;
-        setFirstRender(false);
+        setFirstRender(true);
+        // console.log('fluxOffset: ' + fluxOffset);
+        // console.log('currOrg.roughness: ' + currShape[j].roughness)
       }
     }
   }
@@ -145,20 +112,16 @@ const Shape = (props) => {
     p5.push();
     p5.translate(org.x, org.y); //move to x, y
     p5.rotate(org.angle + change); //rotate by this.angle+change
-    p5.scale(scale);
-    p5.beginShape(); //The lines below create vertex points
+    p5.beginShape(); 
+    //The lines below create our vertex points
     let off = 0;
     for (let i = 0; i < Math.PI*2; i += 0.1) {
       let offset = p5.map(p5.noise(off, change), 0, 1, -org.roughness, org.roughness);
       //more excited = bigger range, more tired = smaller range
+      //let offset = p5.map(p5.noise(off, change), 0, 1, -50, 50);
       let r = org.radius + offset;
       let x = r * Math.cos(i);
       let y = r * Math.sin(i);
-
-      if (props.wonder) { //turns into spinning star shape
-        p5.shearY(Math.PI / 10);
-      }
-
       p5.vertex(x, y);
       off += 0.1;
     }
@@ -191,17 +154,17 @@ const Shape = (props) => {
       org.b -= org.db;
     }
   
-    if (org.x > p5.width - maxRad*scale) { //bounce off right wall
+    if (org.x > p5.width - maxRad) { //bounce off right wall
       org.x -= 5;
       org.dx = -org.dx * spring;
-    } else if (org.x < maxRad*scale) { //bounce off left wall
+    } else if (org.x < maxRad) { //bounce off left wall
       org.x += 5;
       org.dx = -org.dx * spring; 
     }
-    if (org.y > p5.height - maxRad*scale) { //p5.height - org.radius HERE CREATES A TAIL bounce off bottom
+    if (org.y > p5.height - maxRad) { //p5.height - org.radius HERE CREATES A TAIL bounce off bottom
       org.y -= 5;
       org.dy = (-org.dy * spring);
-    } else if (org.y < maxRad*scale) { //bounce off top
+    } else if (org.y < maxRad) { //bounce off top
       org.y += 5;
       org.dy = -org.dy * spring
     }
@@ -211,10 +174,6 @@ const Shape = (props) => {
     d = p5.min(d, .9); // d goes up with velocity squared but can never be so high that the velocity reverses, so limit d to 1
     org.dx = org.dx * (1 - d);// scale dx and dy to include drag effect
     org.dy = org.dy * (1 - d);
-  }
-
-  const random = (min, max) => {
-    return Math.floor(Math.random() * (max - min) ) + min;
   }
 
   const setup = (p5, canvasParentRef) => {
@@ -268,7 +227,7 @@ const Shape = (props) => {
         step(p5, organic, currShape[currShape.length - 1].radius * 1.2, j/20);
       }
     }
-    setChange(change + dChange);
+    setChange(change + 0.01);
   }
 
   return <Sketch setup={setup} draw={draw} />

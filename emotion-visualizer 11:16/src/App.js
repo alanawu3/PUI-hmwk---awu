@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Slider from './slider';
 import './index.css'
 import Shape from './Shape';
-import Emoji from 'a11y-react-emoji'; //emoji component: https://www.npmjs.com/package/a11y-react-emoji
 
 function App() {
   //emotions on a scale 0 - 100
@@ -15,10 +14,6 @@ function App() {
   const [calm, setCalm] = useState(1);
   const [anxious, setAnxious] = useState(1);
   const [numShapes, setNumShapes] = useState();
-
-  const [desolate, setDesolate] = useState(false);
-  const [wonder, setWonder] = useState(false);
-  const [hyper, setHyper] = useState(false);
 
   const pageStyle = {
     display: 'flex',
@@ -42,23 +37,17 @@ function App() {
 
   const sliderStyle = {
     margin: '30px 5px 30px 5px',
-    border: '3px dashed blue',
-    display: 'flex'
+    border: '3px dashed blue'
 }
 
   return (
-    //onClick={() => turnDesolate()}
+    //WHY ISN'T SHAPE COMPONENT RENDERING INSIDE OF PAGE DIV
     <div style={pageStyle}>
       <div style={sidebarStyle}>
         <h3>happy {happy}</h3>
-        <div style={sliderStyle}>
-          <Slider value={happy} setValue={setHappy} />
-          <Emoji onClick = {() => setWonder(!wonder)} symbol="🤩" label="wonder" />
-        </div>
+        <div style={sliderStyle}><Slider value={happy} setValue={setHappy} /></div>
         <h3>sad {sad}</h3>
-        <div style={sliderStyle}>
-          <Slider value={sad} setValue={setSad}/>
-          <Emoji onClick = {() => setDesolate(!desolate)} symbol="😭" label="desolate" /></div>
+        <div style={sliderStyle}><Slider value={sad} setValue={setSad}/></div>
         <h3>excited {excited}</h3>
         <div style={sliderStyle}><Slider value={excited} setValue={setExcited}/></div>
         <h3>tired {tired}</h3>
@@ -67,9 +56,8 @@ function App() {
         <div style={sliderStyle}><Slider value={angry} setValue={setAngry}/></div>
       </div>
       <div style={canvasStyle}>
-        <Shape happy={happy} sad={sad} desolate={desolate} excited={excited} tired={tired} angry={angry}
-        worried={worried} calm={calm} anxious={anxious} numShapes={numShapes} wonder={wonder}
-        hyper={hyper}/>
+        <Shape happy={happy} sad={sad} excited={excited} tired={tired} angry={angry}
+        worried={worried} calm={calm} anxious={anxious} numShapes={numShapes}/>
       </div>
     </div>
 );
