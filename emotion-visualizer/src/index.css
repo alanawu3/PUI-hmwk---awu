@@ -8,7 +8,8 @@
   width: 100%;
   max-width: 500px;
   height: 2vh;
-  margin: auto;
+  margin: 0px 10px 0px 0px; /*2nd px = dist btwn slider & emoji*/
+  border-radius: 10%;
 }
 
 .example-thumb {
@@ -16,7 +17,7 @@
   position: relative;
   z-index: 100;
   background: #ffffff;
-  border: 12.2px solid #3774ff;
+  border: 12.2px solid #ff4ea4;
   border-radius: 100%;
   display: block;
   box-shadow: 0 0 2px 0 rgb(0 0 0 / 44%);
@@ -24,21 +25,20 @@
 
 .example-track {
   position: relative;
-  background: #ddd;
+  background: rgb(203, 203, 203);
 }
 
-/*filled in part of track*/
 .example-track.example-track-0 {
-  background: #83a9ff;
+  background: #fea8d1;
 }
 
 .horizontal-slider .example-track {
-  top: 20px; /*vertical placement of thumb?*/
+  top: 14px; /*vertical placement of thumb?*/
   height: 10px; /*width of traack*/
 }
 
 .horizontal-slider .example-thumb {
-  top: 12px;
+  top: 6px;
   width: 10px;
   outline: none;
   height: 10px;
@@ -49,6 +49,9 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  color: white;
+  font-family: monospace;
+  font-weight: normal;
 }
 
 svg {

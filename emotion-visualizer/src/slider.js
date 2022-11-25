@@ -9,8 +9,6 @@ const Slider = (props) => {
         thumbClassName="example-thumb"
         trackClassName="example-track"
         defaultValue={0}
-        //onChange={(value) => console.log(value)}
-        //onChange={(value) => changeHappy(value)}
         onChange={(value) => props.setValue(value)}
         />
     );

@@ -21,6 +21,7 @@ const Shape = (props) => {
   const [firstRender, setFirstRender] = useState(true)
 
   const [pulse, setPulse] = useState(false);
+  const [clouds, setClouds] = useState([]);
 
   //r, g, b, dx, dy, numShapes, gravity, roughness, drag, randomness
   const [targetR, setTargetR] = useState(100);
@@ -29,7 +30,6 @@ const Shape = (props) => {
   
   useEffect(() => {
     if (!firstRender & props.desolate) { 
-      console.log('foooooo')
       setTargetR(10);
       setTargetG(15);
       setTargetB(90);
@@ -43,11 +43,29 @@ const Shape = (props) => {
       setDChange(.01);
       setScale(.2);
     }
+    if (!firstRender & props.hyper) { 
+      setTargetR(random(100, 255));
+      setTargetG(random(100, 255));
+      setTargetB(random(100, 255));
+      setSpeedFactor(15)
+      // console.log('speedFac: ', speedFactor)
+      // //why don't these  update? because only checks for shallow equality
+      // setNumOrgs(10)
+      // setNumShapes(10)
+      // console.log('numShpeas', numShapes)
+      setFluxOffset(1.5)
+      updateNums();
+      setGravity(0)
+      setSpring(.9)
+      // setDChange(Math.max(.00001, 0.01 - props.tired/2000))
+      // setScale(1)
+      setDrag(0)
+      // console.log(shapes.length)
+    }
     else if (!props.desolate) {
-      console.log('yayyayy')
-      setTargetR(100 + props.happy + props.excited + props.angry * 2.8 - props.sad);
-      setTargetG(100 + (props.happy + props.excited)*.7 - props.sad - props.angry);
-      setTargetB(100 - props.happy - props.excited + props.sad/3 - props.angry);
+      setTargetR(100 + props.happy + props.excited + props.angry * 2.8 - props.sad + props.calm*.6);
+      setTargetG(100 + (props.happy + props.excited)*.7 - props.sad - props.angry + props.calm * 1.5);
+      setTargetB(100 - props.happy - props.excited + props.sad/3 - props.angry + props.calm*.6);
       setSpeedFactor(props.excited/20 + props.happy/50 + 1)
       setNumOrgs(Math.max(10, props.happy + props.excited - props.sad - props.tired))
       setNumShapes(Math.floor(Math.max(1, props.excited/10)))
@@ -55,37 +73,40 @@ const Shape = (props) => {
       updateNums();
       setGravity(Math.max(-.05, .2 * props.happy*-0.003 + props.sad*0.004 + props.tired*0.004 - props.excited*.003))
       setSpring((props.happy + props.excited)/90);
-      setDChange(Math.max(.00001, 0.01 - props.tired/2000));
+      setDChange(Math.max(.00001, 0.01 - props.tired/2000 - props.calm/4000));
       setScale(1);
       setDrag(.0001 + props.tired/200)
     }
-    }, [props.happy, props.sad, props.excited, props.tired, props.angry, props.desolate])
+    }, [props.happy, props.sad, props.excited, props.tired, props.angry, props.desolate, props.hyper, props.calm])
 
   useEffect(() => {
     setDChange(.02 + props.angry/100)
   }, [props.angry])
 
   useEffect(() => {
-    if (props.wonder) {
-      setNumOrgs(200);
+    if (props.rage) {
+      setDChange(1)
+      setTargetR(150)
+      setTargetG(0)
+      setTargetB(0)
+      setFluxOffset(10) //this doesn't go into effect until later
     }
     else {
-      setNumOrgs(Math.max(10, props.happy + props.excited - props.sad - props.tired))
+      updateNums()
+      setDChange(.01)
+      //why doesn't it set back to normal settings here? Why does it keep the red & flux?
     }
-  }, [props.wonder])
+  }, [props.rage])
 
-  useEffect(() => { //rn hyper mode doesn't immediately trigger, but somehow does when i save again
-    if (props.hyper) {
-      console.log('HYPE')
-      setNumOrgs(10);
-      setNumShapes(20);
-      setSpeedFactor(10);
+
+  useEffect(() => {
+    if (props.asleep) {
+      makeClouds()
     }
     else {
-      setNumOrgs(Math.max(10, props.happy + props.excited - props.sad - props.tired))
-      setNumShapes(Math.floor(Math.max(1, props.excited/10)))
+      setClouds([])
     }
-  }, [props.hyper])
+  }, [props.asleep])
 
   const updateNums = () => {
     while (shapes.length < numShapes) {
@@ -129,7 +150,7 @@ const Shape = (props) => {
       const newDX = random(-5, 5);
       const newDY = random(-5, 5);
       for (let j = 0; j < currShape.length; j++) { //loops thru each org for each shape
-        //i want it to run every time EXCEPT when first rendered
+        //want it to run every time EXCEPT when first rendered
         if (!firstRender) {
           currShape[j].dx = newDX;
           currShape[j].dy = newDY;
@@ -142,7 +163,6 @@ const Shape = (props) => {
 
   const show = (p5, org) => {
     p5.noStroke(); // no stroke for the circle
-    //const colorOffset = random(-100, 100);
     p5.fill(org.r + org.rX, org.g + org.gX, org.b + org.bX, 30);
     p5.push();
     p5.translate(org.x, org.y); //move to x, y
@@ -219,6 +239,41 @@ const Shape = (props) => {
     return Math.floor(Math.random() * (max - min) ) + min;
   }
 
+  const makeClouds = () => {
+    //make 10 clouds
+    for (let i = 0; i < 20; i++) {
+      clouds.push(
+        {
+          age: 0,
+          radius: random(2, 75),
+          x: random(0, window.innerWidth),
+          y: random(0, window.innerHeight),
+          dx: random(-1, 1),
+          dy: random(-1, 1),
+          roughness: i * fluxOffset,
+          angle: i * random(0, 45),
+          r: 100,
+          g: 100,
+          b: 100,
+          rX: random(-50, 50),
+          gX: random(-50, 50),
+          bX: random(-50, 50),
+          dr: 1,
+          dg: 1,
+          db: 1,
+          show: show,
+          step: step
+        })
+    }
+  }
+
+  const drawClouds = (p5) => {
+    for (let i = 0; i < clouds.length; i++) {
+      show(p5, clouds[i])
+      step(p5, clouds[i], clouds[i].radius, 1)
+    }
+  }
+
   const setup = (p5, canvasParentRef) => {
     // canvasParentRef = <div className="canvasS..">
     const canvasWidth = canvasParentRef.offsetWidth;
@@ -233,7 +288,7 @@ const Shape = (props) => {
         {
           age: 0,
           radius: (.1 + i),
-          x: p5.width/2,
+          x: p5.width*.55,
           y: p5.height/2,
           dx: 0,
           dy: 0,
@@ -256,9 +311,18 @@ const Shape = (props) => {
   }
 
   const draw = p5 => {
-    p5.background(0, 0, 0, 30);
+    if (props.asleep) {
+      p5.background(100, 100, 100, 30);
+    }
+    else {
+      p5.background(0, 0, 0, 30);
+    }
     p5.stroke(0);
     p5.strokeWeight(10);
+    
+    if (props.asleep) {
+      drawClouds(p5);
+    }
 
     //loop through shapes array
     for (let i = 0; i < shapes.length; i++) {
@@ -277,3 +341,12 @@ const Shape = (props) => {
 }
 
 export default Shape;
+
+  // useEffect(() => {
+  //   if (props.wonder) {
+  //     setNumOrgs(200);
+  //   }
+  //   else {
+  //     setNumOrgs(Math.max(10, props.happy + props.excited - props.sad - props.tired))
+  //   }
+  // }, [props.wonder])
