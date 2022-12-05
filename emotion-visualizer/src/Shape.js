@@ -12,16 +12,12 @@ const Shape = (props) => {
 
   const [change, setChange] = useState(0);
   const [dChange, setDChange] = useState(0.01);
-  const [np, setNP] = useState(100) // how many particles
   const [gravity, setGravity] = useState(0) // downward acceleration
   const [spring, setSpring] = useState(.9) // how much velocity is retained after bounce
   const [drag, setDrag] = useState(0.0001) // drag causes particles to slow down
   const [speedFactor, setSpeedFactor] = useState(1);
   const [fluxOffset, setFluxOffset] = useState(1);
   const [firstRender, setFirstRender] = useState(true)
-
-  const [pulse, setPulse] = useState(false);
-  const [clouds, setClouds] = useState([]);
 
   //r, g, b, dx, dy, numShapes, gravity, roughness, drag, randomness
   const [targetR, setTargetR] = useState(100);
@@ -62,22 +58,33 @@ const Shape = (props) => {
       setDrag(0)
       // console.log(shapes.length)
     }
+    else if (!firstRender & props.peace) {
+      setTargetR(170)
+      setTargetG(170)
+      setTargetB(170)
+      setSpeedFactor(.5)
+      setGravity(0)
+      setSpring(1);
+      setDChange(.005);
+      setScale(1);
+      setDrag(.0001 + props.tired/200)
+    }
     else if (!props.desolate) {
-      setTargetR(100 + props.happy + props.excited + props.angry * 2.8 - props.sad + props.calm*.6);
-      setTargetG(100 + (props.happy + props.excited)*.7 - props.sad - props.angry + props.calm * 1.5);
-      setTargetB(100 - props.happy - props.excited + props.sad/3 - props.angry + props.calm*.6);
-      setSpeedFactor(props.excited/20 + props.happy/50 + 1)
+      setTargetR(100 + props.happy + props.excited + props.angry * 2.8 - props.sad + props.calm*.3);
+      setTargetG(100 + (props.happy + props.excited)*.7 - props.sad - props.angry + props.calm * .4);
+      setTargetB(100 - props.happy - props.excited + props.sad/3 - props.angry + props.calm*.3);
+      setSpeedFactor(props.excited/20 + props.happy/50 + props.angry/100 + 1)
       setNumOrgs(Math.max(10, props.happy + props.excited - props.sad - props.tired))
       setNumShapes(Math.floor(Math.max(1, props.excited/10)))
       setFluxOffset((props.excited - props.tired/2)/100 + 1) //when both are zero, flux = 1, as tired increases flux gets closer to 0, as excited increases flux gets closer to 2
       updateNums();
       setGravity(Math.max(-.05, .2 * props.happy*-0.003 + props.sad*0.004 + props.tired*0.004 - props.excited*.003))
-      setSpring((props.happy + props.excited)/90);
+      setSpring((props.happy + props.excited)/90 + (props.angry + props.calm)/100);
       setDChange(Math.max(.00001, 0.01 - props.tired/2000 - props.calm/4000));
       setScale(1);
       setDrag(.0001 + props.tired/200)
     }
-    }, [props.happy, props.sad, props.excited, props.tired, props.angry, props.desolate, props.hyper, props.calm])
+    }, [props.happy, props.sad, props.excited, props.tired, props.angry, props.desolate, props.hyper, props.calm, props.peace])
 
   useEffect(() => {
     setDChange(.02 + props.angry/100)
@@ -97,16 +104,6 @@ const Shape = (props) => {
       //why doesn't it set back to normal settings here? Why does it keep the red & flux?
     }
   }, [props.rage])
-
-
-  useEffect(() => {
-    if (props.asleep) {
-      makeClouds()
-    }
-    else {
-      setClouds([])
-    }
-  }, [props.asleep])
 
   const updateNums = () => {
     while (shapes.length < numShapes) {
@@ -239,41 +236,6 @@ const Shape = (props) => {
     return Math.floor(Math.random() * (max - min) ) + min;
   }
 
-  const makeClouds = () => {
-    //make 10 clouds
-    for (let i = 0; i < 20; i++) {
-      clouds.push(
-        {
-          age: 0,
-          radius: random(2, 75),
-          x: random(0, window.innerWidth),
-          y: random(0, window.innerHeight),
-          dx: random(-1, 1),
-          dy: random(-1, 1),
-          roughness: i * fluxOffset,
-          angle: i * random(0, 45),
-          r: 100,
-          g: 100,
-          b: 100,
-          rX: random(-50, 50),
-          gX: random(-50, 50),
-          bX: random(-50, 50),
-          dr: 1,
-          dg: 1,
-          db: 1,
-          show: show,
-          step: step
-        })
-    }
-  }
-
-  const drawClouds = (p5) => {
-    for (let i = 0; i < clouds.length; i++) {
-      show(p5, clouds[i])
-      step(p5, clouds[i], clouds[i].radius, 1)
-    }
-  }
-
   const setup = (p5, canvasParentRef) => {
     // canvasParentRef = <div className="canvasS..">
     const canvasWidth = canvasParentRef.offsetWidth;
@@ -319,10 +281,6 @@ const Shape = (props) => {
     }
     p5.stroke(0);
     p5.strokeWeight(10);
-    
-    if (props.asleep) {
-      drawClouds(p5);
-    }
 
     //loop through shapes array
     for (let i = 0; i < shapes.length; i++) {

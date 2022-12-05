@@ -8,7 +8,7 @@
   width: 100%;
   max-width: 500px;
   height: 2vh;
-  margin: 0px 10px 0px 0px; /*2nd px = dist btwn slider & emoji*/
+  margin: 0px 15px 0px 0px; /*2nd px = dist btwn slider & emoji*/
   border-radius: 10%;
 }
 

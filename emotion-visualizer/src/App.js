@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import Slider from './slider';
+import Emoji from 'a11y-react-emoji'; //emoji component: https://www.npmjs.com/package/a11y-react-emoji
 import './index.css'
 import Shape from './Shape';
-import Emoji from 'a11y-react-emoji'; //emoji component: https://www.npmjs.com/package/a11y-react-emoji
+import Journal from './Journal';
 
 function App() {
   const [journalPage, setJournalPage] = useState(false)
-  const [journalData, setJournalData] = useState([])
+  const [notes, setNotes] = useState([])
 
   //emotions on a scale 0 - 100
   const [happy, setHappy] = useState(0);
@@ -15,7 +16,6 @@ function App() {
   const [tired, setTired] = useState(0);
   const [angry, setAngry] = useState(0);
   const [calm, setCalm] = useState(1);
-  const [anxious, setAnxious] = useState(1);
 
   const [desolate, setDesolate] = useState(false);
   const [wonder, setWonder] = useState(false);
@@ -27,14 +27,13 @@ function App() {
   const pageStyle = {
     display: 'flex',
     backgroundColor: 'black',
-    //border: '3px solid blue',
     height: window.innerHeight,
   }
 
   const sidebarStyle = {
       width: '25%',
       margin: '3%',
-      padding: '2% 0.5% 0% 1%',
+      padding: '2% 1% 0% 1%',
       height: window.innerHeight*.9,
       border: '3px solid white',
       borderRadius: '30px',
@@ -45,40 +44,78 @@ function App() {
   const canvasStyle = {
     width: '100%',
     position: 'absolute',
-    height: window.innerHeight,
-    // border: '3px solid red'
+    height: window.innerHeight
 }
 
   const sliderStyle = {
     margin: '6px 5px 35px 5px',
-    // border: '3px dashed blue',
     display: 'flex'
 }
 
   const emojiStyle = {
-    border: '2px solid white',
     borderRadius: '5px',
-    padding: '3px 5px 0px 5px'
+    boxShadow: '3px 3px 3px gray',
+    background: '#fea8d1',
+    padding: '3px 5px 0px 5px',
+    cursor: 'pointer'
   }
 
   const selEmojiStyle = {
-    border: '2px solid white',
-    background: '#fea8d1',
+    background: '#BAB8F2', 
+    boxShadow: '3px 3px 3px gray',
     borderRadius: '5px',
-    padding: '3px 5px 0px 5px'
+    padding: '3px 5px 0px 5px',
+    cursor: 'pointer'
   }
 
   const btnStyle = {
     position: 'relative',
     padding: '12px 15px 12px 15px',
-    //borderRadius: '10px',
     zIndex: '5',
     color: 'white',
     backgroundColor: '#6e1047',
-    fontSize: '17px'
+    fontSize: '17px',
+    borderRadius: '10px'
+  }
+
+  const journalBtnStyle = {
+    position: 'fixed',
+    padding: '12px 15px 12px 15px',
+    top: '5%',
+    right: '3%',
+    zIndex: '5',
+    color: 'white',
+    backgroundColor: '#764BA8',
+    fontSize: '17px',
+    borderRadius: '10px'
+  }
+
+  useEffect(() => {
+    console.log('state updated')
+  }, [notes])
+
+  const saveEmotion = () => {
+    notes.push({
+      happy: happy,
+      sad: sad,
+      excited: excited,
+      tired: tired,
+      angry: angry,
+      calm: calm,
+      desolate: desolate,
+      wonder: wonder,
+      hyper: hyper,
+      asleep: asleep,
+      rage: rage,
+      peace: peace
+    })
   }
 
   return (
+  <div>
+    {journalPage ? <Journal journalPage={journalPage} setJournalPage={setJournalPage}
+    notes={notes} setNotes={setNotes}/> :
+
     <div style={pageStyle}>
       <div style={sidebarStyle}>
         <h3>happy</h3>
@@ -118,15 +155,19 @@ function App() {
           <div style={peace ? selEmojiStyle : emojiStyle}>
             <Emoji style={{fontSize: '25px'}} onClick = {() => setPeace(!peace)} symbol="🫠" label="peace" /></div>
         </div>
-        <button style={btnStyle}>SAVE EMOTION STATE</button>
+        <button style={btnStyle} onClick={() => saveEmotion()}>Save Emotion State</button>
+        <p style={{marginTop: '10px'}}>States Saved: {notes.length}</p>
       </div>
+      <button style={journalBtnStyle} onClick = {() => setJournalPage(!journalPage)}>Emotion Journal</button>
       <div style={canvasStyle}>
         <Shape happy={happy} sad={sad} desolate={desolate} excited={excited} tired={tired} angry={angry}
-        calm={calm} anxious={anxious} wonder={wonder}
-        hyper={hyper} asleep={asleep} rage={rage}/>
+        calm={calm} wonder={wonder}
+        hyper={hyper} asleep={asleep} rage={rage} peace={peace}/>
       </div>
     </div>
-);
+  }
+  </div> 
+  );
 }
 
 export default App;
