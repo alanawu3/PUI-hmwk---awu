@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './index.css'
 
-//organic code citation: https://editor.p5js.org/kmicheli/sketches/HkJp9lt0Q
+//individual notecard
 
 const Card = (props) => {
     const cardStyle = {
@@ -27,15 +27,16 @@ const Card = (props) => {
     }
 
     const popup = () => {
-        if (props.sketchPopup == -1) {
+        if (props.sketchPopup == -1) { //no notecard currently selected, set to clicked on notecard
             props.setSketchPopup(props.indx)
         }
-        else {
+        else { //deselect current notecard
             props.setSketchPopup(-1)
         }        
     }
 
     return (
+        //turn on / off popup when clicked
         <div onClick={() => popup()} style={cardStyle}>
             <div style={emotionStyle}></div>
         </div>

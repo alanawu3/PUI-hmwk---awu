@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState } from 'react';
 import Slider from './slider';
 import Emoji from 'a11y-react-emoji'; //emoji component: https://www.npmjs.com/package/a11y-react-emoji
 import './index.css'
@@ -6,10 +6,10 @@ import Shape from './Shape';
 import Journal from './Journal';
 
 function App() {
-  const [journalPage, setJournalPage] = useState(false)
-  const [notes, setNotes] = useState([])
+  const [journalPage, setJournalPage] = useState(false) //if true, show journal page, if false, show animation page
+  const [notes, setNotes] = useState([]) //array of saved emotion state objects
 
-  //emotions on a scale 0 - 100
+  //sliders -> emotions on a scale 0 - 100
   const [happy, setHappy] = useState(0);
   const [sad, setSad] = useState(0);
   const [excited, setExcited] = useState(0);
@@ -17,10 +17,11 @@ function App() {
   const [angry, setAngry] = useState(0);
   const [calm, setCalm] = useState(1);
 
+  //triggered by pink buttons
   const [desolate, setDesolate] = useState(false);
   const [wonder, setWonder] = useState(false);
   const [hyper, setHyper] = useState(false);
-  const [asleep, setAsleep] = useState(false); //clouds move in? dreamy? stars, thoughts
+  const [asleep, setAsleep] = useState(false);
   const [rage, setRage] = useState(false);
   const [peace, setPeace] = useState(false);
 
@@ -30,7 +31,7 @@ function App() {
     height: window.innerHeight,
   }
 
-  const sidebarStyle = {
+  const sidebarStyle = { //container for sliders, buttons
       width: '25%',
       margin: '3%',
       padding: '2% 1% 0% 1%',
@@ -41,7 +42,7 @@ function App() {
       zIndex: '5'
   }
 
-  const canvasStyle = {
+  const canvasStyle = { //container for animation sketch
     width: '100%',
     position: 'absolute',
     height: window.innerHeight
@@ -60,7 +61,7 @@ function App() {
     cursor: 'pointer'
   }
 
-  const selEmojiStyle = {
+  const selEmojiStyle = { //when button is selected
     background: '#BAB8F2', 
     boxShadow: '3px 3px 3px gray',
     borderRadius: '5px',
@@ -68,7 +69,7 @@ function App() {
     cursor: 'pointer'
   }
 
-  const btnStyle = {
+  const btnStyle = { //button not selected
     position: 'relative',
     padding: '12px 15px 12px 15px',
     zIndex: '5',
@@ -78,7 +79,7 @@ function App() {
     borderRadius: '10px'
   }
 
-  const journalBtnStyle = {
+  const journalBtnStyle = { //switch to journal page
     position: 'fixed',
     padding: '12px 15px 12px 15px',
     top: '5%',
@@ -90,12 +91,8 @@ function App() {
     borderRadius: '10px'
   }
 
-  useEffect(() => {
-    console.log('state updated')
-  }, [notes])
-
-  const saveEmotion = () => {
-    notes.push({
+  const saveEmotion = () => { //save current emotion state data into notes array
+    setNotes(oldArray => [...oldArray, {
       happy: happy,
       sad: sad,
       excited: excited,
@@ -108,7 +105,7 @@ function App() {
       asleep: asleep,
       rage: rage,
       peace: peace
-    })
+    }]);
   }
 
   return (

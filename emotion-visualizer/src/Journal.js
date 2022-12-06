@@ -3,10 +3,9 @@ import Sketch from 'react-p5'
 import Card from './Card'
 import NoteShape from './NoteShape';
 
-//props.notes, props.setNotes
+//journal page with saved emotion notecards & notecard animation popup
 const Journal = (props) => {
     const [sketchPopup, setSketchPopup] = useState(-1) //draw sketch popup when true
-    //const [currNote, setCurrNote] = useState()
 
     const journalBtnStyle = {
         position: 'fixed',
@@ -69,11 +68,11 @@ const Journal = (props) => {
 
     return (
     <div>
-    {(sketchPopup != -1) ? 
+    {(sketchPopup != -1) ? //when popup is set to a specific note
     <div style = {journalStyle}>
         <h1 style={titleStyle}>Saved Emotions</h1>
         <div style={blockStyle}></div>
-        {props.notes.map(
+        {props.notes.map( //draws card for each saved emotion state object in notes array
             (note, indx) =>
             {
                 const r = 100 + note.happy + note.excited + note.angry * 2.8 - note.sad + note.calm*.3
@@ -96,9 +95,8 @@ const Journal = (props) => {
                 <img src="https://img.icons8.com/ios-filled/50/null/x.png" width='28' height='28'/>
             </button>
         </div>
-        {console.log(props.notes[sketchPopup])}
     </div>
-     : 
+     : //if no note selected, just draw the notecards, no popup animation
     <div style = {journalStyle}>
         <h1 style={titleStyle}>Saved Emotions</h1>
         <div style={blockStyle}></div>
