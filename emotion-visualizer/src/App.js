@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import Slider from './slider';
 import Emoji from 'a11y-react-emoji'; //emoji component: https://www.npmjs.com/package/a11y-react-emoji
 import './index.css'
@@ -8,6 +8,10 @@ import Journal from './Journal';
 function App() {
   const [journalPage, setJournalPage] = useState(false) //if true, show journal page, if false, show animation page
   const [notes, setNotes] = useState([]) //array of saved emotion state objects
+  const [dimensions, setDimensions] = useState({ 
+    height: window.innerHeight,
+    width: window.innerWidth
+  })
 
   //sliders -> emotions on a scale 0 - 100
   const [happy, setHappy] = useState(0);
@@ -27,8 +31,7 @@ function App() {
 
   const pageStyle = {
     display: 'flex',
-    backgroundColor: 'black',
-    height: window.innerHeight,
+    backgroundColor: 'black'
   }
 
   const sidebarStyle = { //container for sliders, buttons
@@ -43,9 +46,8 @@ function App() {
   }
 
   const canvasStyle = { //container for animation sketch
-    width: '100%',
     position: 'absolute',
-    height: window.innerHeight
+    width: '100%'
 }
 
   const sliderStyle = {
@@ -90,6 +92,26 @@ function App() {
     fontSize: '17px',
     borderRadius: '10px'
   }
+
+  const handleResize = () => {
+    console.log('resized to: ', window.innerWidth, 'x', window.innerHeight)
+    setDimensions({
+      height: window.innerHeight,
+      width: window.innerWidth
+    })
+  }
+
+  // useEffect(() => {
+  //   window.addEventListener('mousedown', setDimensions({
+  //     height: window.innerHeight,
+  //     width: window.innerWidth
+  //   }))
+  //   console.log(dimensions)
+  // })
+
+  // useEffect(() => {
+  //   window.addEventListener('resize', handleResize)
+  // })
 
   const saveEmotion = () => { //save current emotion state data into notes array
     setNotes(oldArray => [...oldArray, {

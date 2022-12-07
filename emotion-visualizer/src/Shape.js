@@ -236,8 +236,10 @@ const Shape = (props) => {
   }
 
   const setup = (p5, canvasParentRef) => {
-    const canvasWidth = canvasParentRef.offsetWidth; //sets sketch width to aprent container widcth
+    const canvasWidth = canvasParentRef.offsetWidth; //sets sketch width to parent container widcth
     const canvasHeight = 789; 
+    //const canvasHeight = canvasParentRef.offsetHeight; 
+    console.log(canvasParentRef.offsetHeight)
     p5.createCanvas(canvasWidth, canvasHeight).parent(canvasParentRef);
     p5.frameRate(50); //# frames per second
     
