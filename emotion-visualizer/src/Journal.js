@@ -34,16 +34,15 @@ const Journal = (props) => {
     const journalStyle = {
         width: window.innerWidth, //still unable to set card width even with this here
         height: window.innerHeight,
-        flexWrap: 'wrap',
-        display: 'flex',
         padding: '50px',
         alignContent: 'start'
     }
 
     const popupStyle = {
         position: 'absolute',
-        top: '30px',
-        right: '25%',
+        top: '5%',
+        right: '3%',
+        zIndex: '6',
         border: '5px solid rgb(150, 150, 150)'
     }
 
@@ -57,12 +56,14 @@ const Journal = (props) => {
     }
 
     const titleStyle = {
-        color: 'black',
-        position: 'fixed'
+        color: 'black', 
+        marginBottom: '15px'
     }
 
     const blockStyle = {
-        width: '100%',
+        display: 'flex',
+        flexWrap: 'wrap',
+        width: '50%',
         height: '60px'
     }
 
@@ -71,7 +72,7 @@ const Journal = (props) => {
     {(sketchPopup != -1) ? //when popup is set to a specific note
     <div style = {journalStyle}>
         <h1 style={titleStyle}>Saved Emotions</h1>
-        <div style={blockStyle}></div>
+        <div style={blockStyle}>
         {props.notes.map( //draws card for each saved emotion state object in notes array
             (note, indx) =>
             {
@@ -83,11 +84,12 @@ const Journal = (props) => {
                     r={r}
                     g={g}
                     b={b}
+                    selected={true}
                     sketchPopup={sketchPopup}
                     setSketchPopup={setSketchPopup}
                 />
             })
-        }
+        }</div>
         <button style={journalBtnStyle} onClick = {() => props.setJournalPage(!props.journalPage)}>Emotion Visualizer</button>
         <div style={popupStyle}>
             <NoteShape data={props.notes[sketchPopup]}/>
@@ -99,7 +101,7 @@ const Journal = (props) => {
      : //if no note selected, just draw the notecards, no popup animation
     <div style = {journalStyle}>
         <h1 style={titleStyle}>Saved Emotions</h1>
-        <div style={blockStyle}></div>
+        <div style={blockStyle}>
         {props.notes.map(
             (note, indx) =>
             {
@@ -111,11 +113,12 @@ const Journal = (props) => {
                     r={r}
                     g={g}
                     b={b}
+                    selected = {false}
                     sketchPopup={sketchPopup}
                     setSketchPopup={setSketchPopup}
                 />
             })
-        }
+        }</div>
         <button style={journalBtnStyle} onClick = {() => props.setJournalPage(!props.journalPage)}>Emotion Visualizer</button>
         <button style={trashBtnStyle} onClick = {() => props.setNotes([])}>Empty Library</button>
     </div>
