@@ -58,7 +58,7 @@ function App() {
   const emojiStyle = {
     borderRadius: '5px',
     boxShadow: '3px 3px 3px gray',
-    background: '#fea8d1',
+    background: 'rgb(170, 0, 100)',
     padding: '3px 5px 0px 5px',
     cursor: 'pointer'
   }
